@@ -39,8 +39,8 @@ namespace LoLNotes.ViewModels
 
             AlanMocek.Communication.ConnectionManager.Url = "https://alanmocek.com/";
 
-            //CurrentViewModel = notesViewModel;
-            CurrentViewModel = startViewModel;
+            CurrentViewModel = notesViewModel;
+            //CurrentViewModel = startViewModel;
         }
     }
 }

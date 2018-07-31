@@ -20,10 +20,30 @@ namespace LoLNotes.ViewModels
         public StartViewModel(User user)
         {
             this.user = user;
-            loginManager = new AlanMocek.Communication.LoginSystem.LoginManager("software/lolnotes/UserCommunication.php","email","password",';');
+            loginManager = new AlanMocek.Communication.LoginSystem.LoginManager("software/lolnotes/login.php","email","password",';');
 
-            loginManager.ResultOptions.Add(new AlanMocek.Communication.ResultOption((x) => { MessageBox.Show(x[1].ToString()); EmailAddress = x[1]; return true; }, 2));
-            loginManager.ResultOptions.Add(new AlanMocek.Communication.ResultOption((x) => { MessageBox.Show("cosss nie dziala"); return true; }, 0));
+            loginManager.ResultOptions.Add(new AlanMocek.Communication.ResultOption((x) => 
+            {
+                if (x[0] == "declined")
+                {
+                    ErrorMessage = x[1];
+                    return true;
+                }
+                else
+                    return false;
+            }, 2));
+            loginManager.ResultOptions.Add(new AlanMocek.Communication.ResultOption((x) =>
+            {
+                if (x[0] == "accepted")
+                {
+                    user.Token = x[1];
+                    return true;
+                }
+                else
+                    return false;
+            }, 2));
+
+            loginManager.ResultOptions.Add(new AlanMocek.Communication.ResultOption((x) => { MessageBox.Show(x[0].ToString());  ErrorMessage="Błąd serwera"; return true; }, 0));
 
         }
 
@@ -38,6 +58,23 @@ namespace LoLNotes.ViewModels
             {
                 emailAddress = value;
                 UpdateProperty(nameof(EmailAddress));
+                UpdateProperty(nameof(ErrorMessage));
+            }
+        }
+
+        private string errorMessage;
+        public string ErrorMessage
+        {
+            get
+            {
+                string temp = errorMessage;
+                errorMessage = string.Empty;
+                return temp;
+            }
+            set
+            {
+                errorMessage = value;
+                UpdateProperty(nameof(ErrorMessage));
             }
         }
 
@@ -50,7 +87,8 @@ namespace LoLNotes.ViewModels
                     signInCommand = new RelayCommand(
                         (arg) => 
                         {
-                            if((arg is PasswordBox) == false)
+                            UpdateProperty(nameof(ErrorMessage));
+                            if ((arg is PasswordBox) == false)
                             {
                                 throw new Exception("Password isnt passwordBox...");
                             }
@@ -62,6 +100,26 @@ namespace LoLNotes.ViewModels
                         });
 
                 return signInCommand;
+            }
+        }
+
+        private ICommand createAccountCommand;
+        public ICommand CreateAccount
+        {
+            get
+            {
+                if (createAccountCommand == null)
+                    createAccountCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            System.Diagnostics.Process.Start("http://google.com");
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return createAccountCommand;
             }
         }
     }
