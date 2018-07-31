@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:vms="clr-namespace:LoLNotes.ViewModels" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LoLNotes.Views"
              mc:Ignorable="d" 
@@ -10,6 +11,8 @@
 
     <UserControl.Resources>
         <vms:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <vms:BoolToVisibilityInvertedConverter x:Key="BoolToVisibilityInvertedConverter"/>
+        <vms:MainViewModel x:Key="Main"/>
     </UserControl.Resources>
     
     <Grid Background="White">
@@ -20,17 +23,16 @@
 
         <Border BorderBrush="#DFE3E6" BorderThickness="0,0,1,0" >
             <ScrollViewer Background="#F4F7FB">
-                <StackPanel>
+                <Grid>
                     
-                    <!-- Favorite Champions -->
-                    <StackPanel Margin="0,20,0,0">
+                    <!-- Search StackPanel -->
+                    <StackPanel Margin="0,20,0,0" Visibility="{Binding SearchChamsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Favorite champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                            <Button Height="20" Width="20" Content="\/" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding HideFavoriteChampions}"/>
+                            <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Search champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                            <Button Height="20" Width="20" Content="X" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding CloseSearchChampionsCommand}"/>
                         </StackPanel>
 
-
-                        <ItemsControl ItemsSource="{Binding FavoriteChampions}" Visibility="{Binding FavChamsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding SearchChampions}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left">
@@ -44,44 +46,94 @@
                         </ItemsControl>
                     </StackPanel>
 
-                    <!-- All Champions -->
-                    <StackPanel Margin="0,20,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="All champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                            <Button Height="20" Width="20" Content="\/" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding HideAllChampions}"/>
+                    <!-- Default StackPanel -->
+                    <StackPanel Visibility="{Binding SearchChamsListVisibility, Converter={StaticResource BoolToVisibilityInvertedConverter}}">
+
+                        <!-- Favorite Champions -->
+                        <StackPanel Margin="0,20,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Favorite champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                                <Button Height="20" Width="20" Content="\/" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding HideFavoriteChampions}"/>
+                            </StackPanel>
+
+
+                            <ItemsControl ItemsSource="{Binding FavoriteChampions}" Visibility="{Binding FavChamsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
 
-                        <ItemsControl ItemsSource="{Binding AllChampions}" Visibility="{Binding AllChamsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
-                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
-                                        </StackPanel>
-                                    </Button>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <!-- All Champions -->
+                        <StackPanel Margin="0,20,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="All champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                                <Button Height="20" Width="20" Content="\/" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding HideAllChampions}"/>
+                            </StackPanel>
+
+                            <ItemsControl ItemsSource="{Binding AllChampions}" Visibility="{Binding AllChamsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+
                     </StackPanel>
-
-
-                </StackPanel>
+                </Grid>
+                
+                
             </ScrollViewer>
         </Border>
 
-        <StackPanel Grid.Column="1">
+        <StackPanel Grid.Column="1" Focusable="True" Background="White">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding LostFocusCommand, Source={StaticResource Main}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             
             <StackPanel Orientation="Horizontal" Margin="30,20,0,0" >
-                <Image Source="/Resources/Champions/Icons/Aatrox.png" Height="30" Width="30"/>
-                <TextBlock Text="Annie" FontFamily="IBM Plex Sans Medium" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                <Image Source="{Binding SelectedChampionNote.Champion.IconPath}" Height="30" Width="30"/>
+                <TextBlock Text="{Binding SelectedChampionNote.Champion.Name}" FontFamily="IBM Plex Sans Medium" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
             </StackPanel>
 
-            <TextBlock Text="Notatka bohatera" Margin="30,15,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+            <TextBlock Text="Champion note" Margin="30,15,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+            <TextBox Height="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True" Text="{Binding SelectedChampionNote.Text}"/>
+
+            <TextBlock Text="Enemie note" Margin="30,30,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
             <TextBox Height="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True"/>
 
-            <TextBlock Text="Notatka wroga" Margin="30,30,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
-            <TextBox Height="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True"/>
+            <TextBlock Text="Enemies List" Margin="30,30,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+            <ItemsControl ItemsSource="{Binding SelectedChampionNote.EnemiesNotes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Margin="30,10,30,0"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button BorderThickness="0">
+                            <Image Height="30" Width="30" Source="{Binding Champion.IconPath }" ToolTip="{Binding Note.Champion.Name}"/>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
         </StackPanel>
         

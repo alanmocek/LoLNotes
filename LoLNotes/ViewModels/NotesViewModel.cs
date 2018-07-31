@@ -14,11 +14,7 @@ namespace LoLNotes.ViewModels
     public class NotesViewModel : BaseViewModel
     {
         private User user;
-
-        public ObservableCollection<Champion> FavoriteChampions { get; set; } = new ObservableCollection<Champion>();
-        public ObservableCollection<Champion> AllChampions { get; set; } = new ObservableCollection<Champion>();
-
-        public readonly List<Champion> ChampionsDefinition = new List<Champion>()
+        private readonly List<Champion> ChampionsDefinition = new List<Champion>()
         {
             new Champion("Jax","Jax"),
             new Champion("Sona","Sona"),
@@ -163,14 +159,20 @@ namespace LoLNotes.ViewModels
             new Champion("Gragas","Gragas")
         };
 
+        public ObservableCollection<Champion> FavoriteChampions { get; set; } = new ObservableCollection<Champion>();
+        public ObservableCollection<Champion> AllChampions { get; set; } = new ObservableCollection<Champion>();
+        public List<Champion> SearchChampions { get; set; } = new List<Champion>();
+
         public NotesViewModel(User user)
         {
             this.user = user;
             user.FavoriteChampions.Add(ChampionsDefinition[0]);
             user.FavoriteChampions.Add(ChampionsDefinition[1]);
             InitLists();
+            SelectedChampionNote = new Note() { Champion = ChampionsDefinition[0], Text = "elton", EnemiesNotes = new List<Note>() { new Note() { Champion = ChampionsDefinition[10], Text = "proba" } } };
         }
-
+        
+        #region lists
         private void InitLists()
         {
             bool favorite = false;
@@ -194,7 +196,7 @@ namespace LoLNotes.ViewModels
                 }
             }
         }
-
+        
         private bool favChamsListVisibility = true;
         public bool FavChamsListVisibility
         {
@@ -220,6 +222,20 @@ namespace LoLNotes.ViewModels
             {
                 allChamsListVisibility = value;
                 UpdateProperty(nameof(AllChamsListVisibility));
+            }
+        }
+
+        private bool searchChamsListVisibility = false;
+        public bool SearchChamsListVisibility
+        {
+            get
+            {
+                return searchChamsListVisibility;
+            }
+            set
+            {
+                searchChamsListVisibility = value;
+                UpdateProperty(nameof(SearchChamsListVisibility));
             }
         }
 
@@ -262,5 +278,55 @@ namespace LoLNotes.ViewModels
                 return hideAllChampionsCommand;
             }
         }
+
+        private ICommand closeSearchChampionsCommand;
+        public ICommand CloseSearchChampionsCommand
+        {
+            get
+            {
+                if (closeSearchChampionsCommand == null)
+                    closeSearchChampionsCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            SearchChamsListVisibility = false;
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return closeSearchChampionsCommand;
+            }
+        }
+
+        public void Search(string value)
+        {
+            if(value.Length<2)
+            {
+                return;
+            }
+            SearchChamsListVisibility = true;
+
+            var lista = from c in ChampionsDefinition where (c.Name.ToLower()).Contains(value.ToLower()) select c;
+            SearchChampions = lista.ToList();
+            UpdateProperty(nameof(SearchChampions));
+        }
+        #endregion
+
+        #region notes
+
+        private Note selectedChampionNote;
+        public Note SelectedChampionNote
+        {
+            get
+            {
+                return selectedChampionNote;
+            }
+            set
+            {
+                selectedChampionNote = value;
+            }
+        }
+        #endregion
     }
 }

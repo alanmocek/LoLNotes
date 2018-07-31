@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace LoLNotes.ViewModels
 {
     using Models;
+    using System.Windows;
+    using System.Windows.Input;
 
     public class MainViewModel : BaseViewModel
     {
@@ -41,6 +43,60 @@ namespace LoLNotes.ViewModels
 
             CurrentViewModel = notesViewModel;
             //CurrentViewModel = startViewModel;
+        }
+
+        private string searchValue = string.Empty;
+        public string SearchValue
+        {
+            get
+            {
+                return searchValue;
+            }
+            set
+            {
+                searchValue = value;
+                UpdateProperty(nameof(SearchValue));
+            }
+        }
+
+        private ICommand searchChampionsCommand;
+        public ICommand SearchChampionsCommand
+        {
+            get
+            {
+                if (searchChampionsCommand == null)
+                    searchChampionsCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            notesViewModel.Search(SearchValue);
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return searchChampionsCommand;
+            }
+        }
+
+        private ICommand lostFocusCommand;
+        public ICommand LostFocusCommand
+        {
+            get
+            {
+                if (lostFocusCommand == null)
+                    lostFocusCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            Keyboard.ClearFocus();
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return lostFocusCommand;
+            }
         }
     }
 }
