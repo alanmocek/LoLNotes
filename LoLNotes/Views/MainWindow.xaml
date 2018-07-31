@@ -1,0 +1,29 @@
+﻿<Window x:Class="LoLNotes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LoLNotes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1280"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Top Bar -->
+        <Grid Grid.Row="0" Background="#272D33">
+            <!-- Search Panel -->
+            <StackPanel Orientation="Horizontal">
+                <TextBox Height="34" Width="127" Background="#F4F7FB" Padding="5" FontFamily="IBM Plex Sans" Foreground="#152935" BorderThickness="0"/>
+                <Button Height="34" Width="34" BorderThickness="0" Background="#3D70B2" Foreground="#F4F7FB" Content="S"/>
+            </StackPanel>
+            
+        </Grid>
+        
+        <!-- Current View -->
+        <ContentPresenter Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+    </Grid>
+</Window>

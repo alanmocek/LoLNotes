@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="LoLNotes.Views.NotesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LoLNotes.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="670" d:DesignWidth="1280">
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border BorderBrush="#DFE3E6" BorderThickness="0,0,1,0" >
+            <ScrollViewer Background="#F4F7FB">
+                <StackPanel>
+                    
+                    <!-- Favorite Champions -->
+                    <StackPanel Margin="0,20,0,0">
+                        <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Ulubieni bohaterzy" Foreground="#152935" Margin="10,0,0,0"/>
+
+                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,10,0,0" HorizontalContentAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Height="28" Width="28" Margin="10,0,0,0"/>
+                                <TextBlock Text="Camille" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- All Champions -->
+                    <StackPanel Margin="0,20,0,0">
+                        <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Wszyscy bohaterzy" Foreground="#152935" Margin="10,0,0,0"/>
+
+                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,10,0,0" HorizontalContentAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Champions/Icons/Aatrox.png" Height="20" Width="20" Margin="10,4,0,4"/>
+                                <TextBlock Text="Camille" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Champions/Icons/Ahri.png" Height="20" Width="20" Margin="10,4,0,4"/>
+                                <TextBlock Text="Ahri" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <StackPanel Grid.Column="1">
+            
+            <StackPanel Orientation="Horizontal" Margin="30,20,0,0" >
+                <Image Source="/Resources/Champions/Icons/Aatrox.png" Height="30" Width="30"/>
+                <TextBlock Text="Annie" FontFamily="IBM Plex Sans Medium" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            </StackPanel>
+
+            <TextBlock Text="Notatka bohatera" Margin="30,15,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+            <TextBox Height="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True"/>
+
+            <TextBlock Text="Notatka wroga" Margin="30,30,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+            <TextBox Height="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True"/>
+
+        </StackPanel>
+        
+    </Grid>
+</UserControl>
