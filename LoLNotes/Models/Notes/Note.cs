@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace LoLNotes.Models
 {
-    public class Note
+    public abstract class Note
     {
         public Champion Champion { get; set; }
         public string Text { get; set; }
-        public List<Note> EnemiesNotes { get; set; } = new List<Note>();
     }
 }

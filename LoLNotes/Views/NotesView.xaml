@@ -15,7 +15,7 @@
         <vms:MainViewModel x:Key="Main"/>
     </UserControl.Resources>
     
-    <Grid Background="White">
+    <Grid Background="White" Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
@@ -26,19 +26,20 @@
                 <Grid>
                     
                     <!-- Search StackPanel -->
-                    <StackPanel Margin="0,20,0,0" Visibility="{Binding SearchChamsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel Margin="0,20,0,0" Visibility="{Binding SearchChampsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Search champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                            <Button Height="20" Width="20" Content="X" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding CloseSearchChampionsCommand}"/>
+                            <Button Height="20" Width="20" Content="X" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding CloseSearchChampsListCommand}"/>
                         </StackPanel>
 
                         <ItemsControl ItemsSource="{Binding SearchChampions}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left">
+                                    <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
                                             <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
+                                            <Button Height="16" Width="16" Margin="10,7,0,7" Content="W" BorderThickness="0" Background="Transparent" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
                                         </StackPanel>
                                     </Button>
                                 </DataTemplate>
@@ -47,23 +48,24 @@
                     </StackPanel>
 
                     <!-- Default StackPanel -->
-                    <StackPanel Visibility="{Binding SearchChamsListVisibility, Converter={StaticResource BoolToVisibilityInvertedConverter}}">
+                    <StackPanel Visibility="{Binding SearchChampsListVisibility, Converter={StaticResource BoolToVisibilityInvertedConverter}}">
 
                         <!-- Favorite Champions -->
                         <StackPanel Margin="0,20,0,0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Favorite champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                                <Button Height="20" Width="20" Content="\/" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding HideFavoriteChampions}"/>
+                                <Button Height="20" Width="20" Content="\/" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeFavChampsListVisibilityCommand}"/>
                             </StackPanel>
 
 
-                            <ItemsControl ItemsSource="{Binding FavoriteChampions}" Visibility="{Binding FavChamsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ItemsControl ItemsSource="{Binding FavoriteChampions}" Visibility="{Binding FavChampsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left">
+                                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
                                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
+                                                <Button Height="16" Width="16" Margin="10,7,0,7" Content="W" BorderThickness="0" Background="Transparent" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -75,16 +77,17 @@
                         <StackPanel Margin="0,20,0,0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="All champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                                <Button Height="20" Width="20" Content="\/" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding HideAllChampions}"/>
+                                <Button Height="20" Width="20" Content="\/" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeAllChampsListVisibilityCommand}"/>
                             </StackPanel>
 
-                            <ItemsControl ItemsSource="{Binding AllChampions}" Visibility="{Binding AllChamsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ItemsControl ItemsSource="{Binding AllChampions}" Visibility="{Binding AllChampsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left">
+                                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
                                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
+                                                <Button Height="16" Width="16" Margin="10,7,0,7" Content="W" BorderThickness="0" Background="Transparent" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -100,42 +103,60 @@
             </ScrollViewer>
         </Border>
 
-        <StackPanel Grid.Column="1" Focusable="True" Background="White">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <i:InvokeCommandAction Command="{Binding LostFocusCommand, Source={StaticResource Main}}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            
-            <StackPanel Orientation="Horizontal" Margin="30,20,0,0" >
-                <Image Source="{Binding SelectedChampionNote.Champion.IconPath}" Height="30" Width="30"/>
-                <TextBlock Text="{Binding SelectedChampionNote.Champion.Name}" FontFamily="IBM Plex Sans Medium" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
-            </StackPanel>
+        <ScrollViewer Grid.Column="1">
+            <StackPanel Focusable="True" Background="White" Visibility="{Binding NotesPanelVisibility ,Converter={StaticResource BoolToVisibilityConverter}}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding LostFocusCommand, Source={StaticResource Main}}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
 
-            <TextBlock Text="Champion note" Margin="30,15,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
-            <TextBox Height="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True" Text="{Binding SelectedChampionNote.Text}"/>
 
-            <TextBlock Text="Enemie note" Margin="30,30,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
-            <TextBox Height="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True"/>
 
-            <TextBlock Text="Enemies List" Margin="30,30,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
-            <ItemsControl ItemsSource="{Binding SelectedChampionNote.EnemiesNotes}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Margin="30,10,30,0"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                <StackPanel Orientation="Horizontal" Margin="30,20,0,0" >
+                    <Image Source="{Binding CurrentMainNote.Champion.IconPath}" Height="30" Width="30"/>
+                    <TextBlock Text="{Binding CurrentMainNote.Champion.Name}" FontFamily="IBM Plex Sans Medium" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                </StackPanel>
+
+                <TextBlock Text="Champion note" Margin="30,15,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+                <TextBox MinHeight="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True" Text="{Binding CurrentMainNote.Text}"/>
+
+
+                <StackPanel Orientation="Vertical" Margin="30,30,30,0" Visibility="{Binding EnemiesListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="Enemies List" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+
+                    <ItemsControl ItemsSource="{Binding CurrentSubNoteEnemiesList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Margin="0,10,0,0"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button BorderThickness="0" Command="{Binding ElementName=grid, Path=DataContext.SelectEnemyCommand}" CommandParameter="{Binding}" >
+                                    <Image Height="30" Width="30" Source="{Binding IconPath }"/>
+                                    <Button.ToolTip>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </Button.ToolTip>
+                                    <Button.InputBindings>
+                                        <MouseBinding Gesture="RightClick" Command="{Binding ElementName=grid, Path=DataContext.DeselectEnemyCommand}" CommandParameter="{Binding}"/>
+                                    </Button.InputBindings>
+
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
                 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button BorderThickness="0">
-                            <Image Height="30" Width="30" Source="{Binding Champion.IconPath }" ToolTip="{Binding Note.Champion.Name}"/>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
 
-        </StackPanel>
-        
+                <StackPanel Orientation="Vertical" Margin="30" Visibility="{Binding EnemyNoteVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="{Binding SelectedEnemy.Name, StringFormat='Enemie note: {0}'}" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+                    <TextBox MinHeight="100" Margin="0,10,0,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True" Text="{Binding CurrentSubNote.Text}"/>
+                </StackPanel>
+                
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

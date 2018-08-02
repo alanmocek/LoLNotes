@@ -25,7 +25,7 @@
             <DockPanel>
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                     <TextBox Height="30" Width="127" Background="#F4F7FB" Padding="7" FontFamily="IBM Plex Sans" Foreground="#152935" BorderThickness="0" Margin="10,0,0,0" MaxLength="18" Text="{Binding SearchValue, Mode=TwoWay}"/>
-                    <Button Height="30" Width="30" BorderThickness="0" Background="#3D70B2" Foreground="#F4F7FB" Content="S" Margin="10,0,0,0" Command="{Binding SearchChampionsCommand}"/>
+                    <Button Height="30" Width="30" BorderThickness="0" Background="#3D70B2" Foreground="#F4F7FB" Content="S" Margin="10,0,0,0" Command="{Binding SearchChampions}"/>
                 </StackPanel>
 
                 <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right">

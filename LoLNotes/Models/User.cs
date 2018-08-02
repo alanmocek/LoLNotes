@@ -11,7 +11,8 @@ namespace LoLNotes.Models
         public string EmailAddress { private get; set; }
         public string Token { get; set; }
 
-        public List<Champion> FavoriteChampions { get; set; } = new List<Champion>();
+        public List<Champion> UserFavoriteChampions { get; set; } = new List<Champion>();
+        public List<MainNote> UserNotes { get; set; } = new List<MainNote>();
 
         public void Login(string emailAddress, string password)
         {

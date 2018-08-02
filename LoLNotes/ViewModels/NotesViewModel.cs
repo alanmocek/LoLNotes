@@ -159,27 +159,22 @@ namespace LoLNotes.ViewModels
             new Champion("Gragas","Gragas")
         };
 
-        public ObservableCollection<Champion> FavoriteChampions { get; set; } = new ObservableCollection<Champion>();
-        public ObservableCollection<Champion> AllChampions { get; set; } = new ObservableCollection<Champion>();
-        public List<Champion> SearchChampions { get; set; } = new List<Champion>();
-
         public NotesViewModel(User user)
         {
             this.user = user;
-            user.FavoriteChampions.Add(ChampionsDefinition[0]);
-            user.FavoriteChampions.Add(ChampionsDefinition[1]);
+            user.UserFavoriteChampions.Add(ChampionsDefinition[0]);
+            user.UserFavoriteChampions.Add(ChampionsDefinition[1]);
             InitLists();
-            SelectedChampionNote = new Note() { Champion = ChampionsDefinition[0], Text = "elton", EnemiesNotes = new List<Note>() { new Note() { Champion = ChampionsDefinition[10], Text = "proba" } } };
+            //SelectedChampionNote = new Note() { Champion = ChampionsDefinition[0], Text = "elton", EnemiesNotes = new List<Note>() { new Note() { Champion = ChampionsDefinition[10], Text = "proba" } } };
         }
-        
-        #region lists
+
         private void InitLists()
         {
             bool favorite = false;
             foreach (Champion champ in ChampionsDefinition)
             {
                 favorite = false;
-                foreach (Champion favoriteChamp in user.FavoriteChampions)
+                foreach (Champion favoriteChamp in user.UserFavoriteChampions)
                 {
                     if (favoriteChamp == champ)
                     {
@@ -187,146 +182,470 @@ namespace LoLNotes.ViewModels
                         break;
                     }
                 }
-                if(favorite)
+                if (favorite)
                 {
                     FavoriteChampions.Add(champ);
-                }else
+                }
+                else
                 {
                     AllChampions.Add(champ);
                 }
             }
         }
-        
-        private bool favChamsListVisibility = true;
-        public bool FavChamsListVisibility
-        {
-            get
-            {
-                return favChamsListVisibility;
-            }
-            set
-            {
-                favChamsListVisibility = value;
-                UpdateProperty(nameof(FavChamsListVisibility));
-            }
-        }
-
-        private bool allChamsListVisibility = true;
-        public bool AllChamsListVisibility
-        {
-            get
-            {
-                return allChamsListVisibility;
-            }
-            set
-            {
-                allChamsListVisibility = value;
-                UpdateProperty(nameof(AllChamsListVisibility));
-            }
-        }
-
-        private bool searchChamsListVisibility = false;
-        public bool SearchChamsListVisibility
-        {
-            get
-            {
-                return searchChamsListVisibility;
-            }
-            set
-            {
-                searchChamsListVisibility = value;
-                UpdateProperty(nameof(SearchChamsListVisibility));
-            }
-        }
-
-        private ICommand hideFavoriteChampionsCommand;
-        public ICommand HideFavoriteChampions
-        {
-            get
-            {
-                if (hideFavoriteChampionsCommand == null)
-                    hideFavoriteChampionsCommand = new RelayCommand(
-                        (arg) =>
-                        {
-                            FavChamsListVisibility = !FavChamsListVisibility;
-                        },
-                        (arg) =>
-                        {
-                            return true;
-                        });
-
-                return hideFavoriteChampionsCommand;
-            }
-        }
-
-        private ICommand hideAllChampionsCommand;
-        public ICommand HideAllChampions
-        {
-            get
-            {
-                if (hideAllChampionsCommand == null)
-                    hideAllChampionsCommand = new RelayCommand(
-                        (arg) =>
-                        {
-                            AllChamsListVisibility = !AllChamsListVisibility;
-                        },
-                        (arg) =>
-                        {
-                            return true;
-                        });
-
-                return hideAllChampionsCommand;
-            }
-        }
-
-        private ICommand closeSearchChampionsCommand;
-        public ICommand CloseSearchChampionsCommand
-        {
-            get
-            {
-                if (closeSearchChampionsCommand == null)
-                    closeSearchChampionsCommand = new RelayCommand(
-                        (arg) =>
-                        {
-                            SearchChamsListVisibility = false;
-                        },
-                        (arg) =>
-                        {
-                            return true;
-                        });
-
-                return closeSearchChampionsCommand;
-            }
-        }
-
         public void Search(string value)
         {
-            if(value.Length<2)
+            if (value.Length < 2)
             {
                 return;
             }
-            SearchChamsListVisibility = true;
-
+            OpenSearchChampsList();
             var lista = from c in ChampionsDefinition where (c.Name.ToLower()).Contains(value.ToLower()) select c;
             SearchChampions = lista.ToList();
             UpdateProperty(nameof(SearchChampions));
         }
-        #endregion
 
-        #region notes
-
-        private Note selectedChampionNote;
-        public Note SelectedChampionNote
+        #region AppData
+        private Champion selectedChampion;
+        public Champion SelectedChampion
         {
             get
             {
-                return selectedChampionNote;
+                return selectedChampion;
             }
             set
             {
-                selectedChampionNote = value;
+                selectedChampion = value;
+                //UpdateProperty(nameof(SelectedChampion));
+                UpdateProperty(nameof(CurrentMainNote));
+                UpdateProperty(nameof(CurrentSubNote));
+                UpdateProperty(nameof(CurrentSubNoteEnemiesList));
+                UpdateProperty(nameof(NotesPanelVisibility));
+                UpdateProperty(nameof(EnemiesListVisibility));
+                UpdateProperty(nameof(EnemyNoteVisibility));
+            }
+        }
+
+        private Champion selectedEnemy;
+        public Champion SelectedEnemy
+        {
+            get
+            {
+                return selectedEnemy;
+            }
+            set
+            {
+                selectedEnemy = value;
+                UpdateProperty(nameof(SelectedEnemy));
+                UpdateProperty(nameof(CurrentSubNote));
+                UpdateProperty(nameof(EnemyNoteVisibility));
+            }
+        }
+
+        public MainNote CurrentMainNote
+        {
+            get
+            {
+                if (SelectedChampion is null)
+                {
+                    return null;
+                }
+
+                foreach (MainNote note in user.UserNotes)
+                {
+                    if (note.Champion == SelectedChampion)
+                    {
+                        return note;
+                    }
+                }
+
+                MainNote newNote = new MainNote() { Champion = SelectedChampion };
+                user.UserNotes.Add(newNote);
+
+                return newNote;
+            }
+        }
+        public SubNote CurrentSubNote
+        {
+            get
+            {
+
+                if (CurrentMainNote is null)
+                {
+                    return null;
+                }
+
+                foreach (SubNote note in CurrentMainNote.SubNotes)
+                {
+                    if (note.Champion == SelectedEnemy)
+                    {
+                        return note;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        public ObservableCollection<Champion> FavoriteChampions { get; set; } = new ObservableCollection<Champion>();
+        public ObservableCollection<Champion> AllChampions { get; set; } = new ObservableCollection<Champion>();
+        public List<Champion> SearchChampions { get; set; } = new List<Champion>();
+        public ObservableCollection<Champion> CurrentSubNoteEnemiesList
+        {
+            get
+            {
+                if (CurrentMainNote is null)
+                {
+                    return null;
+                }
+
+                ObservableCollection<Champion> collection = new ObservableCollection<Champion>();
+
+                foreach (SubNote note in CurrentMainNote.SubNotes)
+                {
+                    collection.Add(note.Champion);
+                }
+
+                return collection;
             }
         }
         #endregion
+
+        #region Lists Visibility
+        private bool favChampsListVisibility = true;
+        public bool FavChampsListVisibility
+        {
+            get
+            {
+                return favChampsListVisibility;
+            }
+            set
+            {
+                favChampsListVisibility = value;
+                UpdateProperty(nameof(FavChampsListVisibility));
+            }
+        }
+
+        private bool allChampsListVisibility = true;
+        public bool AllChampsListVisibility
+        {
+            get
+            {
+                return allChampsListVisibility;
+            }
+            set
+            {
+                allChampsListVisibility = value;
+                UpdateProperty(nameof(AllChampsListVisibility));
+            }
+        }
+
+        private bool searchChampsListVisibility = false;
+        public bool SearchChampsListVisibility
+        {
+            get
+            {
+                return searchChampsListVisibility;
+            }
+            set
+            {
+                searchChampsListVisibility = value;
+                UpdateProperty(nameof(SearchChampsListVisibility));
+            }
+        }
+
+        private ICommand changeFavChampsListVisibilityCommand;
+        private ICommand changeAllChampsListVisibilityCommand;
+        private ICommand closeSearchChampsListCommand;
+
+        public ICommand ChangeFavChampsListVisibilityCommand
+        {
+            get
+            {
+                if (changeFavChampsListVisibilityCommand is null)
+                    changeFavChampsListVisibilityCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            ChangeFavChampsListVisibility();
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return changeFavChampsListVisibilityCommand;
+            }
+        }
+        public ICommand ChangeAllChampsListVisibilityCommand
+        {
+            get
+            {
+                if (changeAllChampsListVisibilityCommand is null)
+                    changeAllChampsListVisibilityCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            ChangeAllChampsListVisibility();
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return changeAllChampsListVisibilityCommand;
+            }
+        }
+        public ICommand CloseSearchChampsListCommand
+        {
+            get
+            {
+                if (closeSearchChampsListCommand is null)
+                    closeSearchChampsListCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            CloseSearchChampsList();
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return closeSearchChampsListCommand;
+            }
+        }
+
+        private void ChangeFavChampsListVisibility()
+        {
+            FavChampsListVisibility = !FavChampsListVisibility;
+        }
+        private void ChangeAllChampsListVisibility()
+        {
+            AllChampsListVisibility = !AllChampsListVisibility;
+        }
+        private void CloseSearchChampsList()
+        {
+            SearchChampsListVisibility = false;
+        }
+        private void OpenSearchChampsList()
+        {
+            SearchChampsListVisibility = true;
+        }
+        #endregion
+
+        #region Notes Visibility
+        public bool NotesPanelVisibility
+        {
+            get
+            {
+                if(SelectedChampion is null)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+        public bool EnemyNoteVisibility
+        {
+            get
+            {
+                if(SelectedEnemy is null)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+        public bool EnemiesListVisibility
+        {
+            get
+            {
+                if(CurrentMainNote is null)
+                {
+                    return false;
+                }
+
+                if (CurrentMainNote.SubNotes.Count < 1) 
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+        #endregion
+
+        #region EnemyOperations
+        private ICommand addEnemyCommand;
+        private ICommand removeEnemyCommand;
+
+        public ICommand AddEnemyCommand
+        {
+            get
+            {
+                if (addEnemyCommand is null)
+                    addEnemyCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            Champion champion = (Champion)arg;
+                            AddEnemy(champion);
+                        },
+                        (arg) =>
+                        {
+                            Champion champion = (Champion)arg;
+                            if (champion is null)
+                            {
+                                return false;
+                            }
+
+                            return true;
+                        });
+
+                return addEnemyCommand;
+            }
+        }
+        public ICommand RemoveEnemyCommand
+        {
+            get
+            {
+                if (removeEnemyCommand is null)
+                    removeEnemyCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            RemoveEnemy();
+                        },
+                        (arg) =>
+                        {
+                            if(CurrentSubNote is null)
+                            {
+                                return false;
+                            }
+
+                            return true;
+                        });
+
+                return removeEnemyCommand;
+            }
+        }
+
+        private void AddEnemy( Champion champion)
+        {
+            foreach(SubNote note in CurrentMainNote.SubNotes)
+            {
+                if(note.Champion == champion)
+                {
+                    return;
+                }
+            }
+
+            CurrentMainNote.SubNotes.Add(new SubNote() { Champion = champion });
+            UpdateProperty(nameof(EnemiesListVisibility));
+            UpdateProperty(nameof(CurrentSubNoteEnemiesList));
+        }
+        private void RemoveEnemy()
+        {
+            CurrentMainNote.SubNotes.Remove(CurrentSubNote);
+        }
+        #endregion
+
+        #region Selecting
+        private ICommand selectChampCommand;
+        private ICommand selectEnemyCommand;
+        private ICommand deselectEnemyCommand;
+
+        public ICommand SelectChampCommand
+        {
+            get
+            {
+                if (selectChampCommand == null)
+                    selectChampCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            Champion champion = (Champion)arg;
+                            SelectChamp(champion);
+                        },
+                        (arg) =>
+                        {
+                            Champion champion = (Champion)arg;
+                            if (champion == null)
+                            {
+                                return false;
+                            }
+
+                            return true;
+                        });
+
+                return selectChampCommand;
+            }
+        }
+        public ICommand SelectEnemyCommand
+        {
+            get
+            {
+                if (selectEnemyCommand == null)
+                    selectEnemyCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            Champion champion = (Champion)arg;
+                            SelectEnemy(champion);
+                        },
+                        (arg) =>
+                        {
+                            Champion champion = (Champion)arg;
+                            if (champion == null)
+                            {
+                                return false;
+                            }
+
+                            return true;
+                        });
+
+                return selectEnemyCommand;
+            }
+        }
+        public ICommand DeselectEnemyCommand
+        {
+            get
+            {
+                if (deselectEnemyCommand == null)
+                    deselectEnemyCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            Champion champion = (Champion)arg;
+                            DeselectEnemy(champion);
+                        },
+                        (arg) =>
+                        {
+                            Champion champion = (Champion)arg;
+                            if (champion == null)
+                            {
+                                return false;
+                            }
+
+                            return true;
+                        });
+
+                return deselectEnemyCommand;
+            }
+        }
+
+        private void SelectChamp(Champion champion)
+        {
+            SelectedChampion = champion;
+            SelectedEnemy = null;
+        }
+        private void SelectEnemy(Champion champion)
+        {
+            SelectedEnemy = champion;
+        }
+        private void DeselectEnemy(Champion champion)
+        {
+            if(SelectedEnemy == champion)
+            {
+                SelectedEnemy = null;
+            }
+        }
+        #endregion
+
     }
 }
+

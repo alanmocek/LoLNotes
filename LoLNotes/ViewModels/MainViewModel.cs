@@ -60,7 +60,7 @@ namespace LoLNotes.ViewModels
         }
 
         private ICommand searchChampionsCommand;
-        public ICommand SearchChampionsCommand
+        public ICommand SearchChampions
         {
             get
             {

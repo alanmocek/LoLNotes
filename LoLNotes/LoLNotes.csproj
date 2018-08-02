@@ -60,7 +60,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Champion.cs" />
-    <Compile Include="Models\Note.cs" />
+    <Compile Include="Models\Notes\MainNote.cs" />
+    <Compile Include="Models\Notes\Note.cs" />
+    <Compile Include="Models\Notes\SubNote.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ViewModels\Converters.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
