@@ -12,6 +12,7 @@ namespace LoLNotes.ViewModels
 
     public class MainViewModel : BaseViewModel
     {
+        private readonly Saver saver;
         private readonly User user;
         private NotesViewModel notesViewModel;
         private StartViewModel startViewModel;
@@ -35,6 +36,7 @@ namespace LoLNotes.ViewModels
         public MainViewModel()
         {
             user = new User();
+            saver = new Saver();
 
             notesViewModel = new NotesViewModel(user);
             startViewModel = new StartViewModel(user);
@@ -42,6 +44,8 @@ namespace LoLNotes.ViewModels
             AlanMocek.Communication.ConnectionManager.Url = "https://alanmocek.com/";
 
             startViewModel.ChangeViewModelToNotes += ToNotes;
+
+            saver.Load(user);
 
             //CurrentViewModel = notesViewModel;
             CurrentViewModel = startViewModel;
@@ -100,6 +104,7 @@ namespace LoLNotes.ViewModels
                 return lostFocusCommand;
             }
         }
+        
 
         public bool TopBarContentVisibility
         {
@@ -125,6 +130,28 @@ namespace LoLNotes.ViewModels
         public void ToNotes()
         {
             CurrentViewModel = notesViewModel;
+        }
+
+
+        private ICommand closeWindowCommand;
+        public ICommand CloseWindowCommand
+        {
+            get
+            {
+                if (closeWindowCommand == null)
+                    closeWindowCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            MessageBox.Show("poszlo");
+                            saver.Save(user);
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return closeWindowCommand;
+            }
         }
     }
 }

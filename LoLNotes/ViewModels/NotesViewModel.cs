@@ -14,7 +14,7 @@ namespace LoLNotes.ViewModels
     public class NotesViewModel : BaseViewModel
     {
         private User user;
-        private readonly List<Champion> ChampionsDefinition = new List<Champion>()
+        public static List<Champion> ChampionsDefinition = new List<Champion>()
         {
             new Champion("Jax","Jax"),
             new Champion("Sona","Sona"),
@@ -158,6 +158,18 @@ namespace LoLNotes.ViewModels
             new Champion("Zac","Zac"),
             new Champion("Gragas","Gragas")
         };
+        public static Champion GetChampion(string key)
+        {
+            foreach(Champion champ in ChampionsDefinition)
+            {
+                if(champ.Key == key)
+                {
+                    return champ;
+                }
+            }
+
+            return null;
+        }
 
         public NotesViewModel(User user)
         {
