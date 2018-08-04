@@ -6,15 +6,23 @@
              xmlns:local="clr-namespace:LoLNotes"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-        <viewModels:ViewModelLocator x:Key="Locator"/>
+        <ResourceDictionary>
+            <viewModels:ViewModelLocator x:Key="Locator"/>
 
-        <DataTemplate DataType="{x:Type viewModels:NotesViewModel}">
-            <views:NotesView/>
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:NotesViewModel}">
+                <views:NotesView/>
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:StartViewModel}">
-            <views:StartView/>
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:StartViewModel}">
+                <views:StartView/>
+            </DataTemplate>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Fonts.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
 
     </Application.Resources>
 </Application>

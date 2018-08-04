@@ -22,6 +22,13 @@ namespace LoLNotes.ViewModels
             this.user = user;
             loginManager = new AlanMocek.Communication.LoginSystem.LoginManager("software/lolnotes/login.php","email","password",';');
 
+            InitResultOptions();
+            
+
+        }
+
+        private void InitResultOptions()
+        {
             loginManager.ResultOptions.Add(new AlanMocek.Communication.ResultOption((x) => 
             {
                 if (x[0] == "declined")
@@ -34,18 +41,20 @@ namespace LoLNotes.ViewModels
             }, 2));
             loginManager.ResultOptions.Add(new AlanMocek.Communication.ResultOption((x) =>
             {
-                if (x[0] == "accepted")
-                {
+            if (x[0] == "accepted")
+            {
                     user.Token = x[1];
+                    ChangeViewModelToNotes?.Invoke();
                     return true;
                 }
                 else
                     return false;
             }, 2));
-
             loginManager.ResultOptions.Add(new AlanMocek.Communication.ResultOption((x) => { MessageBox.Show(x[0].ToString());  ErrorMessage="Błąd serwera"; return true; }, 0));
-
         }
+
+        public event ViewModelEventHandler ChangeViewModelToNotes;
+        
 
         private string emailAddress;
         public string EmailAddress
@@ -78,8 +87,11 @@ namespace LoLNotes.ViewModels
             }
         }
 
+        #region LoginOptions
         private ICommand signInCommand;
-        public ICommand SignIn
+        private ICommand createAccountCommand;
+
+        public ICommand SignInCommand
         {
             get
             {
@@ -87,12 +99,8 @@ namespace LoLNotes.ViewModels
                     signInCommand = new RelayCommand(
                         (arg) => 
                         {
-                            UpdateProperty(nameof(ErrorMessage));
-                            if ((arg is PasswordBox) == false)
-                            {
-                                throw new Exception("Password isnt passwordBox...");
-                            }
-                            loginManager.Login(EmailAddress, (arg as PasswordBox).Password);
+                            user.EmailAddress = emailAddress;
+                            SignIn((arg as PasswordBox));
                         }, 
                         (arg) => 
                         {
@@ -102,9 +110,7 @@ namespace LoLNotes.ViewModels
                 return signInCommand;
             }
         }
-
-        private ICommand createAccountCommand;
-        public ICommand CreateAccount
+        public ICommand CreateAccountCommand
         {
             get
             {
@@ -112,7 +118,7 @@ namespace LoLNotes.ViewModels
                     createAccountCommand = new RelayCommand(
                         (arg) =>
                         {
-                            System.Diagnostics.Process.Start("http://google.com");
+                            CreateAccount();
                         },
                         (arg) =>
                         {
@@ -122,5 +128,20 @@ namespace LoLNotes.ViewModels
                 return createAccountCommand;
             }
         }
+
+        private void SignIn( PasswordBox passwordBox)
+        {
+            UpdateProperty(nameof(ErrorMessage));
+            if ((passwordBox is PasswordBox) == false)
+            {
+                throw new Exception("Password isnt passwordBox...");
+            }
+            loginManager.Login(EmailAddress, (passwordBox as PasswordBox).Password);
+        }
+        private void CreateAccount()
+        {
+            System.Diagnostics.Process.Start("http://google.com");
+        }
+        #endregion
     }
 }

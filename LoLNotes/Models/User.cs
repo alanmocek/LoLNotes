@@ -8,7 +8,7 @@ namespace LoLNotes.Models
 {
     public class User
     {
-        public string EmailAddress { private get; set; }
+        public string EmailAddress { get; set; }
         public string Token { get; set; }
 
         public List<Champion> UserFavoriteChampions { get; set; } = new List<Champion>();

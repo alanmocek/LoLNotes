@@ -16,8 +16,6 @@ namespace LoLNotes.ViewModels
         private NotesViewModel notesViewModel;
         private StartViewModel startViewModel;
 
-        
-
         private BaseViewModel currentViewModel;
         public BaseViewModel CurrentViewModel
         {
@@ -29,6 +27,8 @@ namespace LoLNotes.ViewModels
             {
                 currentViewModel = value;
                 UpdateProperty(nameof(CurrentViewModel));
+                UpdateProperty(nameof(TopBarContentVisibility));
+                UpdateProperty(nameof(UserEmailAddress));
             }
         }
 
@@ -41,8 +41,10 @@ namespace LoLNotes.ViewModels
 
             AlanMocek.Communication.ConnectionManager.Url = "https://alanmocek.com/";
 
-            CurrentViewModel = notesViewModel;
-            //CurrentViewModel = startViewModel;
+            startViewModel.ChangeViewModelToNotes += ToNotes;
+
+            //CurrentViewModel = notesViewModel;
+            CurrentViewModel = startViewModel;
         }
 
         private string searchValue = string.Empty;
@@ -97,6 +99,32 @@ namespace LoLNotes.ViewModels
 
                 return lostFocusCommand;
             }
+        }
+
+        public bool TopBarContentVisibility
+        {
+            get
+            {
+                if(CurrentViewModel is StartViewModel)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+        public string UserEmailAddress
+        {
+            get
+            {
+                return user.EmailAddress;
+            }
+        }
+
+
+        public void ToNotes()
+        {
+            CurrentViewModel = notesViewModel;
         }
     }
 }

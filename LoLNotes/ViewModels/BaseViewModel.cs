@@ -9,6 +9,8 @@ namespace LoLNotes.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        public delegate void ViewModelEventHandler();
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void UpdateProperty(string propertyName)
         {

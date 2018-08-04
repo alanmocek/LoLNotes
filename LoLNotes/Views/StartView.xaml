@@ -32,8 +32,8 @@
 
                     <!-- Sign in -->
                     <StackPanel Orientation="Horizontal" Margin="0,25,0,0">
-                        <Button Height="34"  Content="Sign In" Background="#3D70B2" BorderThickness="0" Foreground="#ffffff" HorizontalAlignment="Left" Padding="10,0" FontFamily="IBM Plex Sans Medium" FontSize="13" Command="{Binding SignIn}" CommandParameter="{Binding ElementName=password}"/>
-                        <Button Content="Create Account" FontFamily="IBM Plex Sans Medium" FontSize="13" Padding="10,0" HorizontalAlignment="Left" Foreground="#8897A2" Background="Transparent" BorderThickness="0" Margin="20,0,0,0" Cursor="Hand" Command="{Binding CreateAccount}"/>
+                        <Button Height="34"  Content="Sign In" Background="#3D70B2" BorderThickness="0" Foreground="#ffffff" HorizontalAlignment="Left" Padding="10,0" FontFamily="IBM Plex Sans Medium" FontSize="13" Command="{Binding SignInCommand}" CommandParameter="{Binding ElementName=password}"/>
+                        <Button Content="Create Account" FontFamily="IBM Plex Sans Medium" FontSize="13" Padding="10,0" HorizontalAlignment="Left" Foreground="#8897A2" Background="Transparent" BorderThickness="0" Margin="20,0,0,0" Cursor="Hand" Command="{Binding CreateAccountCommand}"/>
                     </StackPanel>
 
                     <!-- Sign in try information -->

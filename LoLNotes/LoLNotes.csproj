@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AlanMocek.Communication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AlanMocek.Communication, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\Projekty Ksiazka\SystemLaczeniaZDB\AlanMocek.Communication\bin\Debug\AlanMocek.Communication.dll</HintPath>
     </Reference>
@@ -73,6 +73,14 @@
     <Compile Include="Views\StartView.xaml.cs">
       <DependentUpon>StartView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Resources\Styles\Buttons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\Fonts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,6 +128,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\Fonts\LoLNotesIcons.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -268,5 +277,6 @@
     <Resource Include="Resources\Champions\Icons\Zoe.png" />
     <Resource Include="Resources\Champions\Icons\Zyra.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

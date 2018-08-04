@@ -4,10 +4,17 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vms="clr-namespace:LoLNotes.ViewModels"
         xmlns:local="clr-namespace:LoLNotes"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DODAĆ do app.xaml!!!!!-->
+    <Window.Resources>
+        <vms:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <vms:BoolToVisibilityInvertedConverter x:Key="BoolToVisibilityInvertedConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -22,19 +29,22 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <!-- Search Panel -->
-            <DockPanel>
+            <DockPanel Visibility="{Binding TopBarContentVisibility, Converter={StaticResource BoolToVisibilityConverter }}">
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                    <TextBox Height="30" Width="127" Background="#F4F7FB" Padding="7" FontFamily="IBM Plex Sans" Foreground="#152935" BorderThickness="0" Margin="10,0,0,0" MaxLength="18" Text="{Binding SearchValue, Mode=TwoWay}"/>
-                    <Button Height="30" Width="30" BorderThickness="0" Background="#3D70B2" Foreground="#F4F7FB" Content="S" Margin="10,0,0,0" Command="{Binding SearchChampions}"/>
+                    <TextBox Height="30" Width="127" Background="#F4F7FB" Padding="7" FontFamily="IBM Plex Sans" Foreground="#152935" BorderThickness="0" Margin="10,0,0,0" MaxLength="18" Text="{Binding SearchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Return" Command="{Binding SearchChampions}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button Height="30" Width="30" BorderThickness="0" Background="#3D70B2" Foreground="#F4F7FB" Content="" FontFamily="{StaticResource LoLNotesFont}" Margin="10,0,0,0" Command="{Binding SearchChampions}"/>
                 </StackPanel>
 
                 <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
-                    <TextBlock Text="blabla@gmail.com" Foreground="#F4F7FB" Height="50" Padding="15" FontFamily="IBM Plex Sans Medium" FontSize="12" />
+                    <TextBlock Text="{Binding UserEmailAddress}" Foreground="#F4F7FB" Height="50" Padding="15" FontFamily="IBM Plex Sans Medium" FontSize="12" />
                 </StackPanel>
             </DockPanel>
-            
 
-            
+            <TextBlock Text="LoLNotes" FontFamily="IBM Plex Sans Medium" FontSize="14" VerticalAlignment="Center" Foreground="#F4F7FB" Margin="10,0,0,0" Visibility="{Binding TopBarContentVisibility, Converter={StaticResource BoolToVisibilityInvertedConverter}}"/>
         </Grid>
         
         <!-- Current View -->
