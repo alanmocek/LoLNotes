@@ -38,14 +38,17 @@ namespace LoLNotes.ViewModels
             user = new User();
             saver = new Saver();
 
+            saver.Load(user);
+
             notesViewModel = new NotesViewModel(user);
             startViewModel = new StartViewModel(user);
 
             AlanMocek.Communication.ConnectionManager.Url = "https://alanmocek.com/";
 
-            startViewModel.ChangeViewModelToNotes += ToNotes;
+            AlanMocek.Communication.EventSystem.EventManager eventManager = new AlanMocek.Communication.EventSystem.EventManager();
+            eventManager.EventOptions = new List<AlanMocek.Communication.EventSystem.EventOption>();
 
-            saver.Load(user);
+            startViewModel.ChangeViewModelToNotes += ToNotes;
 
             //CurrentViewModel = notesViewModel;
             CurrentViewModel = startViewModel;
@@ -142,7 +145,6 @@ namespace LoLNotes.ViewModels
                     closeWindowCommand = new RelayCommand(
                         (arg) =>
                         {
-                            MessageBox.Show("poszlo");
                             saver.Save(user);
                         },
                         (arg) =>

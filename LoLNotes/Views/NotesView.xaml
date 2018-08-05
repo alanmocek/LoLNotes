@@ -12,6 +12,8 @@
     <UserControl.Resources>
         <vms:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <vms:BoolToVisibilityInvertedConverter x:Key="BoolToVisibilityInvertedConverter"/>
+        <vms:BoolToFavoriteGlyphConverter x:Key="BoolToFavoriteGlyphConverter"/>
+        <vms:BoolToVisibilityGlyphConverter x:Key="BoolToVisibilityGlyphConverter"/>
     </UserControl.Resources>
     
     <Grid Background="White" Name="grid">
@@ -53,7 +55,7 @@
                         <StackPanel Margin="0,20,0,0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Favorite champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                                <Button Height="20" Width="20" Content="" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeFavChampsListVisibilityCommand}"/>
+                                <Button Height="20" Width="20" Content="{Binding FavChampsListVisibility, Converter={StaticResource BoolToVisibilityGlyphConverter}}" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeFavChampsListVisibilityCommand}"/>
                             </StackPanel>
 
 
@@ -76,7 +78,7 @@
                         <StackPanel Margin="0,20,0,0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="All champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                                <Button Height="20" Width="20" Content="" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeAllChampsListVisibilityCommand}"/>
+                                <Button Height="20" Width="20" Content="{Binding AllChampsListVisibility, Converter={StaticResource BoolToVisibilityGlyphConverter}}" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeAllChampsListVisibilityCommand}"/>
                             </StackPanel>
 
                             <ItemsControl ItemsSource="{Binding AllChampions}" Visibility="{Binding AllChampsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -115,6 +117,7 @@
                 <StackPanel Orientation="Horizontal" Margin="30,20,0,0" >
                     <Image Source="{Binding CurrentMainNote.Champion.IconPath}" Height="30" Width="30"/>
                     <TextBlock Text="{Binding CurrentMainNote.Champion.Name}" FontFamily="IBM Plex Sans Medium" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <Button Height="20" Width="20" Margin="10,0,0,0" Command="{Binding ChangeFavoriteCommand}" Content="{Binding IsSelectedChampionFavorite, Converter={StaticResource BoolToFavoriteGlyphConverter}}" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0"/>
                 </StackPanel>
 
                 <TextBlock Text="Champion note" Margin="30,15,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
@@ -150,8 +153,17 @@
                 
 
                 <StackPanel Orientation="Vertical" Margin="30" Visibility="{Binding EnemyNoteVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Text="{Binding SelectedEnemy.Name, StringFormat='Enemie note: {0}'}" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding SelectedEnemy.Name, StringFormat='Enemie note: {0}'}" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+                        <Button Grid.Column="1" DockPanel.Dock="Left"  Height="20" Width="20" Command="{Binding RemoveEnemyCommand}" Content="" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0"/>
+                    </Grid>
+
                     <TextBox MinHeight="100" Margin="0,10,0,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True" Text="{Binding CurrentSubNote.Text, UpdateSourceTrigger=PropertyChanged}"/>
+                    
                 </StackPanel>
                 
 

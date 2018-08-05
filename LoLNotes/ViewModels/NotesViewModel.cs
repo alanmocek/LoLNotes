@@ -174,10 +174,7 @@ namespace LoLNotes.ViewModels
         public NotesViewModel(User user)
         {
             this.user = user;
-            user.UserFavoriteChampions.Add(ChampionsDefinition[0]);
-            user.UserFavoriteChampions.Add(ChampionsDefinition[1]);
             InitLists();
-            //SelectedChampionNote = new Note() { Champion = ChampionsDefinition[0], Text = "elton", EnemiesNotes = new List<Note>() { new Note() { Champion = ChampionsDefinition[10], Text = "proba" } } };
         }
 
         private void InitLists()
@@ -234,6 +231,7 @@ namespace LoLNotes.ViewModels
                 UpdateProperty(nameof(NotesPanelVisibility));
                 UpdateProperty(nameof(EnemiesListVisibility));
                 UpdateProperty(nameof(EnemyNoteVisibility));
+                UpdateProperty(nameof(IsSelectedChampionFavorite));
             }
         }
 
@@ -320,6 +318,8 @@ namespace LoLNotes.ViewModels
                 return collection;
             }
         }
+
+        
         #endregion
 
         #region Lists Visibility
@@ -556,6 +556,11 @@ namespace LoLNotes.ViewModels
         private void RemoveEnemy()
         {
             CurrentMainNote.SubNotes.Remove(CurrentSubNote);
+            SelectedEnemy = null;
+            UpdateProperty(nameof(CurrentSubNoteEnemiesList));
+            UpdateProperty(nameof(SelectedEnemy));
+            UpdateProperty(nameof(EnemyNoteVisibility));
+            UpdateProperty(nameof(EnemiesListVisibility));
         }
         #endregion
 
@@ -655,6 +660,76 @@ namespace LoLNotes.ViewModels
             {
                 SelectedEnemy = null;
             }
+        }
+        #endregion
+
+        #region Glyphs
+        public bool IsSelectedChampionFavorite
+        {
+            get
+            {
+                if (SelectedChampion is null)
+                {
+                    return false;
+                }
+
+                foreach (Champion champ in user.UserFavoriteChampions)
+                {
+                    if (champ.Key == SelectedChampion.Key)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        private ICommand changeFavoriteCommand;
+
+        public ICommand ChangeFavoriteCommand
+        {
+            get
+            {
+                if (changeFavoriteCommand is null)
+                    changeFavoriteCommand = new RelayCommand(
+                        (arg) =>
+                        {
+                            ChangeFavorite();
+                        },
+                        (arg) =>
+                        {
+                            return true;
+                        });
+
+                return changeFavoriteCommand;
+            }
+        }
+
+        private void ChangeFavorite()
+        {
+            if (SelectedChampion == null)
+            {
+                return;
+            }
+
+            foreach (Champion champ in user.UserFavoriteChampions)
+            {
+                if (champ == SelectedChampion)
+                {
+                    user.UserFavoriteChampions.Remove(SelectedChampion);
+                    FavoriteChampions.Remove(SelectedChampion);
+                    AllChampions.Add(SelectedChampion);
+                    UpdateProperty(nameof(IsSelectedChampionFavorite));
+                    return;
+                }
+            }
+
+
+            user.UserFavoriteChampions.Add(SelectedChampion);
+            FavoriteChampions.Add(SelectedChampion);
+            AllChampions.Remove(SelectedChampion);
+            UpdateProperty(nameof(IsSelectedChampionFavorite));
         }
         #endregion
 

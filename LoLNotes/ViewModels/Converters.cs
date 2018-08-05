@@ -51,4 +51,48 @@ namespace LoLNotes.ViewModels
             throw new NotImplementedException();
         }
     }
+
+    public class BoolToFavoriteGlyphConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool favorite = (bool)value;
+            if (favorite)
+            {
+                return '';
+            }
+            else
+            {
+                return '';
+            }
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class BoolToVisibilityGlyphConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool visibility = (bool)value;
+            if (visibility)
+            {
+                return '';
+            }
+            else
+            {
+                return '';
+            }
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
