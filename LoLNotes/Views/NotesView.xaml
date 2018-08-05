@@ -29,18 +29,18 @@
                     <!-- Search StackPanel -->
                     <StackPanel Margin="0,20,0,0" Visibility="{Binding SearchChampsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Search champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                            <Button Height="20" Width="20" Content="" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding CloseSearchChampsListCommand}"/>
+                            <TextBlock Height="20" Style="{StaticResource MainTextBlock}" Text="Search champions" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                            <Button Height="20" Width="20" Content="" Style="{StaticResource TransparentButton}" Padding="0" Margin="5,0,0,0" Command="{Binding CloseSearchChampsListCommand}"/>
                         </StackPanel>
 
                         <ItemsControl ItemsSource="{Binding SearchChampions}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
+                                    <Button Style="{StaticResource ChampionButton}" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
                                             <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
-                                            <Button Height="16" Width="16" Margin="10,7,0,7" Content="" FontFamily="{StaticResource LoLNotesFont}" BorderThickness="0" Background="Transparent" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
+                                            <Button Height="16" Width="16" Margin="10,7,0,7" Content="" Style="{StaticResource TransparentButton}" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
                                         </StackPanel>
                                     </Button>
                                 </DataTemplate>
@@ -54,19 +54,19 @@
                         <!-- Favorite Champions -->
                         <StackPanel Margin="0,20,0,0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="Favorite champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                                <Button Height="20" Width="20" Content="{Binding FavChampsListVisibility, Converter={StaticResource BoolToVisibilityGlyphConverter}}" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeFavChampsListVisibilityCommand}"/>
+                                <TextBlock Height="20" Style="{StaticResource MainTextBlock}" Text="Favorite champions" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                                <Button Height="20" Width="20" Content="{Binding FavChampsListVisibility, Converter={StaticResource BoolToVisibilityGlyphConverter}}" Style="{StaticResource TransparentButton}" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeFavChampsListVisibilityCommand}"/>
                             </StackPanel>
 
 
                             <ItemsControl ItemsSource="{Binding FavoriteChampions}" Visibility="{Binding FavChampsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
+                                        <Button Style="{StaticResource ChampionButton}" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
                                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
-                                                <Button Height="16" Width="16" Margin="10,7,0,7" Content="" FontFamily="{StaticResource LoLNotesFont}" BorderThickness="0" Background="Transparent" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
+                                                <Button Height="16" Width="16" Margin="10,7,0,7" Content="" Style="{StaticResource TransparentButton}" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -77,18 +77,18 @@
                         <!-- All Champions -->
                         <StackPanel Margin="0,20,0,0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Height="20" FontSize="12" FontFamily="IBM Plex Sans Medium" Text="All champions" Foreground="#152935" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                                <Button Height="20" Width="20" Content="{Binding AllChampsListVisibility, Converter={StaticResource BoolToVisibilityGlyphConverter}}" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0" Padding="0" Margin="5,0,0,0" Command="{Binding ChangeAllChampsListVisibilityCommand}"/>
+                                <TextBlock Height="20" Style="{StaticResource MainTextBlock}" Text="All champions" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                                <Button Height="20" Width="20" Content="{Binding AllChampsListVisibility, Converter={StaticResource BoolToVisibilityGlyphConverter}}" Style="{StaticResource TransparentButton}"  Padding="0" Margin="5,0,0,0" Command="{Binding ChangeAllChampsListVisibilityCommand}"/>
                             </StackPanel>
 
                             <ItemsControl ItemsSource="{Binding AllChampions}" Visibility="{Binding AllChampsListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button BorderThickness="0,1" Background="#ffffff" BorderBrush="#DFE3E6" Margin="0,5,0,0" HorizontalContentAlignment="Left" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
+                                        <Button Style="{StaticResource ChampionButton}" Command="{Binding ElementName=grid, Path=DataContext.SelectChampCommand}" CommandParameter="{Binding}">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Height="24" Width="24" Margin="10,3,0,3" Source="{Binding IconPath}"/>
                                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontFamily="IBM Plex Sans" FontSize="12" Margin="10,0,0,0"/>
-                                                <Button Height="16" Width="16" Margin="10,7,0,7" Content="" FontFamily="{StaticResource LoLNotesFont}" BorderThickness="0" Background="Transparent" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
+                                                <Button Height="16" Width="16" Margin="10,7,0,7" Content="" Style="{StaticResource TransparentButton}" Cursor="Hand" Command="{Binding ElementName=grid, Path=DataContext.AddEnemyCommand}" CommandParameter="{Binding}"/>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -117,15 +117,15 @@
                 <StackPanel Orientation="Horizontal" Margin="30,20,0,0" >
                     <Image Source="{Binding CurrentMainNote.Champion.IconPath}" Height="30" Width="30"/>
                     <TextBlock Text="{Binding CurrentMainNote.Champion.Name}" FontFamily="IBM Plex Sans Medium" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    <Button Height="20" Width="20" Margin="10,0,0,0" Command="{Binding ChangeFavoriteCommand}" Content="{Binding IsSelectedChampionFavorite, Converter={StaticResource BoolToFavoriteGlyphConverter}}" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0"/>
+                    <Button Height="20" Width="20" Margin="10,0,0,0" Command="{Binding ChangeFavoriteCommand}" Content="{Binding IsSelectedChampionFavorite, Converter={StaticResource BoolToFavoriteGlyphConverter}}" Style="{StaticResource TransparentButton}"/>
                 </StackPanel>
 
-                <TextBlock Text="Champion note" Margin="30,15,0,0" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+                <TextBlock Text="Champion note" Margin="30,15,0,0" Style="{StaticResource MainTextBlock}"/>
                 <TextBox MinHeight="100" Margin="30,10,30,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True" Text="{Binding CurrentMainNote.Text, UpdateSourceTrigger=PropertyChanged}"/>
 
 
                 <StackPanel Orientation="Vertical" Margin="30,30,30,0" Visibility="{Binding EnemiesListVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <TextBlock Text="Enemies List" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
+                    <TextBlock Text="Enemies List" Style="{StaticResource MainTextBlock}"/>
 
                     <ItemsControl ItemsSource="{Binding CurrentSubNoteEnemiesList}">
                         <ItemsControl.ItemsPanel>
@@ -158,8 +158,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="20"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock DockPanel.Dock="Left" Text="{Binding SelectedEnemy.Name, StringFormat='Enemie note: {0}'}" FontFamily="IBM Plex Sans Medium" FontSize="12"/>
-                        <Button Grid.Column="1" DockPanel.Dock="Left"  Height="20" Width="20" Command="{Binding RemoveEnemyCommand}" Content="" FontFamily="{StaticResource LoLNotesFont}" Background="Transparent" BorderThickness="0"/>
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding SelectedEnemy.Name, StringFormat='Enemie note: {0}'}" Style="{StaticResource MainTextBlock}"/>
+                        <Button Grid.Column="1" DockPanel.Dock="Left"  Height="20" Width="20" Command="{Binding RemoveEnemyCommand}" Content="" Style="{StaticResource TransparentButton}"/>
                     </Grid>
 
                     <TextBox MinHeight="100" Margin="0,10,0,0" Background="#F4F7FB" BorderBrush="#DFE3E6" FontFamily="IBM Plex Sans" Padding="5" AcceptsReturn="True" AcceptsTab="True" Text="{Binding CurrentSubNote.Text, UpdateSourceTrigger=PropertyChanged}"/>

@@ -541,6 +541,11 @@ namespace LoLNotes.ViewModels
 
         private void AddEnemy( Champion champion)
         {
+            if(SelectedChampion is null)
+            {
+                return;
+            }
+
             foreach(SubNote note in CurrentMainNote.SubNotes)
             {
                 if(note.Champion == champion)
