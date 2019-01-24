@@ -1,7 +1,2 @@
 # LoLNotes
 
-## Description
-
-## Usage
-
-## View
